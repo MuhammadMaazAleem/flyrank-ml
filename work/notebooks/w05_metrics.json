@@ -1,0 +1,62 @@
+{
+  "Week 4 Baseline Rule": {
+    "ROC-AUC": 0.8074676679182311,
+    "PR-AUC (Avg Prec)": 0.6408537871836579,
+    "F1-Score": 0.749003984063745,
+    "Precision": 0.5987261146496815,
+    "Recall": 1.0,
+    "Accuracy": 0.8425,
+    "Precision@20": 0.9,
+    "Precision@50": 0.74,
+    "Spearman \u03c1 (CTR gap)": 0.4276735547803326,
+    "Brier Loss": 0.13540002979224602
+  },
+  "Logistic Regression": {
+    "ROC-AUC": 0.9924558475872618,
+    "PR-AUC (Avg Prec)": 0.977352877970881,
+    "F1-Score": 0.8913043478260869,
+    "Precision": 0.9111111111111111,
+    "Recall": 0.8723404255319149,
+    "Accuracy": 0.95,
+    "Precision@20": 1.0,
+    "Precision@50": 1.0,
+    "Spearman \u03c1 (CTR gap)": 0.8531389564514075,
+    "Brier Loss": 0.031226936456122983
+  },
+  "Decision Tree": {
+    "ROC-AUC": 1.0,
+    "PR-AUC (Avg Prec)": 1.0,
+    "F1-Score": 1.0,
+    "Precision": 1.0,
+    "Recall": 1.0,
+    "Accuracy": 1.0,
+    "Precision@20": 1.0,
+    "Precision@50": 1.0,
+    "Spearman \u03c1 (CTR gap)": 0.6899600556534817,
+    "Brier Loss": 5.555555555555553e-05
+  },
+  "Random Forest": {
+    "ROC-AUC": 1.0,
+    "PR-AUC (Avg Prec)": 0.9999999999999998,
+    "F1-Score": 1.0,
+    "Precision": 1.0,
+    "Recall": 1.0,
+    "Accuracy": 1.0,
+    "Precision@20": 1.0,
+    "Precision@50": 1.0,
+    "Spearman \u03c1 (CTR gap)": 0.7786383600270074,
+    "Brier Loss": 0.0019908208743166537
+  },
+  "Gradient Boosting": {
+    "ROC-AUC": 1.0,
+    "PR-AUC (Avg Prec)": 1.0,
+    "F1-Score": 1.0,
+    "Precision": 1.0,
+    "Recall": 1.0,
+    "Accuracy": 1.0,
+    "Precision@20": 1.0,
+    "Precision@50": 1.0,
+    "Spearman \u03c1 (CTR gap)": 0.8345158475040753,
+    "Brier Loss": 3.681324511416867e-05
+  }
+}
