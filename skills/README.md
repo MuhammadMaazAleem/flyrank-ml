@@ -12,11 +12,19 @@ Guidelines for honest ML development, validation design, and baseline comparison
 - **Complexity Justification**: Start with linear and tree benchmarks. Do not adopt complex architectures unless they demonstrate a significant, validated lift over interpretable alternatives.
 - **Error Inspection**: Inspect false positives, false negatives, and residual distributions qualitatively to understand real-world failure modes.
 
-### 2. `flyrank/flyrank-data`
+### 2. `hunting-leakage-and-validating`
+Guidelines for validating methodology, catching feature leakage, and constructing honest split designs:
+- **Grouped / Time-Aware Splitting**: Standard random i.i.d. splits often overestimate production performance when data naturally clusters by entity (client, domain, user) or time. Use `GroupKFold` or temporal splits to measure true generalization.
+- **Tautological Leakage Detection**: Audit whether engineered features (e.g. ratios, proxies) mathematically duplicate the label creation rule or proxy definition.
+- **Target & Future Leakage**: Ensure no post-event or future-window signals (e.g. post-update clicks, forward conversion rates) enter the feature matrix.
+- **Defensible Claim Framing**: Always bound claims to the experimental setup. Replace absolute statements ("our model proves 35% uplift") with measured, decision-support terminology ("observed PR-AUC of 0.84 on unseen client holdout domains").
+
+### 3. `flyrank/flyrank-data`
 Standards for FlyRank SEO telemetry and data schema:
 - **Entity**: Google Search Console (GSC) URL/query performance records.
 - **Primary Telemetry**:
   - `url`: Page slug identifier (e.g., `/blog/article-0001`).
+  - `site_id` / `client_cluster`: Identifier for the client domain or site group.
   - `position`: Average Google SERP ranking position (1.0 to 15.0+).
   - `ctr`: Observed click-through rate (`clicks / impressions`).
   - `expected_ctr`: Benchmark CTR based on the position-curve lookup.
