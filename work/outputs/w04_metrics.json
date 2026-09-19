@@ -1,0 +1,13 @@
+{
+  "n_eligible": 823,
+  "score_mean": 44.3,
+  "score_median": 40.83,
+  "score_max": 99.13,
+  "score_min": 15.75,
+  "reason_codes": {
+    "LOW_CTR_TOP10": 823
+  },
+  "action_codes": {
+    "rewrite_title_meta": 823
+  }
+}
