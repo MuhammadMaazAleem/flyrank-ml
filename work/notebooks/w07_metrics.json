@@ -1,0 +1,30 @@
+{
+  "total_urls_evaluated": 2000,
+  "total_actionable_urls": 861,
+  "actionable_percentage": 43.05,
+  "lane_breakdown": {
+    "CTR-fix (rewrite_title_meta)": 473,
+    "Content-Refresh (refresh_content_body)": 226,
+    "Quick-Win (optimize_internal_links_and_snippets)": 162,
+    "Monitor (maintain_and_monitor)": 1139
+  },
+  "reason_code_breakdown": {
+    "LOW_CTR_TOP10": 473,
+    "CONTENT_DECAY_STALE": 226,
+    "QUICK_WIN_OPPORTUNITY": 162,
+    "HEALTHY_PERFORMANCE": 1139
+  },
+  "priority_tier_breakdown": {
+    "P1_CRITICAL": 349,
+    "P2_HIGH": 312,
+    "P3_MEDIUM": 200,
+    "P4_BACKLOG": 1139
+  },
+  "aggregate_monthly_click_uplift_estimate": 552053,
+  "average_actionable_roi_index": 12.8,
+  "figures_generated": [
+    "w07_action_archetype_distribution.png",
+    "w07_cost_value_priority_matrix.png",
+    "w07_decay_vs_ctr_gap_quadrant.png"
+  ]
+}
