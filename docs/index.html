@@ -1,0 +1,775 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Machine Learning for Organic Search CTR Optimization | FlyRank Research</title>
+  <meta name="description" content="A research paper evaluating organic search snippet click-through rate optimization, honest grouped validation, and content action playbooks on multi-domain telemetry.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,600;1,6..72,400&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg-primary: #fbfbfd;
+      --bg-surface: #ffffff;
+      --bg-subtle: #f4f4f7;
+      --border-color: #e5e5eb;
+      --border-focus: #1a73e8;
+      --text-main: #1f2328;
+      --text-muted: #57606a;
+      --text-accent: #0969da;
+      --accent-navy: #1a365d;
+      --accent-coral: #c53030;
+      --accent-green: #22863a;
+      --accent-gold: #b7791f;
+      --code-bg: #f6f8fa;
+      --shadow-sm: 0 1px 3px rgba(0,0,0,0.06), 0 1px 2px rgba(0,0,0,0.04);
+      --shadow-md: 0 4px 6px -1px rgba(0,0,0,0.08), 0 2px 4px -1px rgba(0,0,0,0.04);
+      --radius: 8px;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      background-color: var(--bg-primary);
+      color: var(--text-main);
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      line-height: 1.7;
+      font-size: 16px;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* Top Navigation Header */
+    .top-nav {
+      position: sticky;
+      top: 0;
+      background: rgba(255, 255, 255, 0.92);
+      backdrop-filter: blur(10px);
+      border-bottom: 1px solid var(--border-color);
+      z-index: 100;
+      padding: 0.75rem 2rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .top-nav .brand {
+      font-weight: 700;
+      font-size: 1.05rem;
+      color: var(--accent-navy);
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      text-decoration: none;
+    }
+    .top-nav .nav-links {
+      display: flex;
+      gap: 1.25rem;
+      list-style: none;
+    }
+    .top-nav .nav-links a {
+      color: var(--text-muted);
+      text-decoration: none;
+      font-size: 0.875rem;
+      font-weight: 500;
+      transition: color 0.15s ease;
+    }
+    .top-nav .nav-links a:hover { color: var(--text-accent); }
+    .top-nav .badge {
+      background: #e8f0fe;
+      color: #1967d2;
+      padding: 0.2rem 0.6rem;
+      border-radius: 999px;
+      font-size: 0.75rem;
+      font-weight: 600;
+    }
+
+    /* Paper Container */
+    .paper-container {
+      max-width: 900px;
+      margin: 2.5rem auto 5rem;
+      padding: 0 1.5rem;
+    }
+
+    /* Header Section */
+    .paper-header {
+      text-align: center;
+      margin-bottom: 3rem;
+      border-bottom: 1px solid var(--border-color);
+      padding-bottom: 2.5rem;
+    }
+    .paper-category {
+      text-transform: uppercase;
+      font-size: 0.8rem;
+      font-weight: 700;
+      letter-spacing: 1px;
+      color: var(--text-accent);
+      margin-bottom: 0.75rem;
+    }
+    .paper-title {
+      font-family: 'Newsreader', serif;
+      font-size: 2.4rem;
+      line-height: 1.25;
+      color: #0f172a;
+      margin-bottom: 1.25rem;
+      font-weight: 600;
+    }
+    .author-block {
+      display: flex;
+      justify-content: center;
+      gap: 2rem;
+      margin-top: 1.25rem;
+      font-size: 0.95rem;
+    }
+    .author-name {
+      font-weight: 600;
+      color: var(--text-main);
+    }
+    .author-affil {
+      color: var(--text-muted);
+    }
+    .meta-bar {
+      margin-top: 1rem;
+      font-size: 0.825rem;
+      color: var(--text-muted);
+      display: flex;
+      justify-content: center;
+      gap: 1.5rem;
+    }
+
+    /* Abstract Box */
+    .abstract-card {
+      background: var(--bg-surface);
+      border: 1px solid #d0d7de;
+      border-left: 4px solid var(--text-accent);
+      border-radius: var(--radius);
+      padding: 1.75rem 2rem;
+      margin-bottom: 3rem;
+      box-shadow: var(--shadow-sm);
+    }
+    .abstract-title {
+      font-size: 0.95rem;
+      text-transform: uppercase;
+      font-weight: 700;
+      letter-spacing: 0.8px;
+      color: var(--accent-navy);
+      margin-bottom: 0.75rem;
+    }
+    .abstract-text {
+      font-size: 1.02rem;
+      line-height: 1.75;
+      color: #334155;
+      text-align: justify;
+    }
+
+    /* Main Content Typography */
+    h2 {
+      font-family: 'Newsreader', serif;
+      font-size: 1.75rem;
+      color: #0f172a;
+      margin: 3rem 0 1rem;
+      padding-bottom: 0.5rem;
+      border-bottom: 1px solid var(--border-color);
+      font-weight: 600;
+    }
+    h3 {
+      font-size: 1.2rem;
+      color: var(--accent-navy);
+      margin: 1.75rem 0 0.75rem;
+      font-weight: 600;
+    }
+    p {
+      margin-bottom: 1.25rem;
+      color: #334155;
+    }
+    ul, ol {
+      margin-bottom: 1.25rem;
+      padding-left: 1.75rem;
+      color: #334155;
+    }
+    li {
+      margin-bottom: 0.5rem;
+    }
+
+    /* Stat Callout Grid */
+    .metric-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 1rem;
+      margin: 2rem 0;
+    }
+    .metric-box {
+      background: var(--bg-surface);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius);
+      padding: 1.25rem;
+      text-align: center;
+      box-shadow: var(--shadow-sm);
+    }
+    .metric-val {
+      font-size: 1.8rem;
+      font-weight: 800;
+      color: var(--accent-navy);
+      margin-bottom: 0.25rem;
+    }
+    .metric-label {
+      font-size: 0.8rem;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      font-weight: 600;
+      color: var(--text-muted);
+    }
+
+    /* Table Styles */
+    .table-container {
+      overflow-x: auto;
+      margin: 2rem 0;
+      background: var(--bg-surface);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow-sm);
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.9rem;
+      text-align: left;
+    }
+    th {
+      background: #f8fafc;
+      font-weight: 600;
+      color: var(--accent-navy);
+      padding: 0.85rem 1.25rem;
+      border-bottom: 2px solid var(--border-color);
+    }
+    td {
+      padding: 0.85rem 1.25rem;
+      border-bottom: 1px solid var(--border-color);
+      color: #334155;
+    }
+    tr:last-child td { border-bottom: none; }
+    tr:hover td { background: #f8fafc; }
+
+    /* Figure Container */
+    .figure-card {
+      background: var(--bg-surface);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius);
+      padding: 1.25rem;
+      margin: 2.25rem 0;
+      box-shadow: var(--shadow-sm);
+      text-align: center;
+    }
+    .figure-card img {
+      max-width: 100%;
+      height: auto;
+      border-radius: 4px;
+      border: 1px solid #f1f5f9;
+    }
+    .figure-caption {
+      margin-top: 0.85rem;
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      line-height: 1.5;
+      text-align: left;
+    }
+    .figure-caption strong {
+      color: var(--text-main);
+    }
+
+    /* Callout Alert Boxes */
+    .alert-box {
+      border-radius: var(--radius);
+      padding: 1.25rem 1.5rem;
+      margin: 1.75rem 0;
+      font-size: 0.95rem;
+      line-height: 1.6;
+    }
+    .alert-info {
+      background: #eff6ff;
+      border: 1px solid #bfdbfe;
+      color: #1e40af;
+    }
+    .alert-warning {
+      background: #fffbeb;
+      border: 1px solid #fde68a;
+      color: #92400e;
+    }
+    .alert-danger {
+      background: #fef2f2;
+      border: 1px solid #fecaca;
+      color: #991b1b;
+    }
+
+    /* Formula Box */
+    .math-block {
+      background: #f8fafc;
+      border: 1px solid #e2e8f0;
+      border-radius: var(--radius);
+      padding: 1.25rem 1.5rem;
+      margin: 1.5rem 0;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.88rem;
+      color: #1e293b;
+      overflow-x: auto;
+    }
+
+    /* Code & Links */
+    code {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.88em;
+      background: var(--code-bg);
+      padding: 0.15em 0.4em;
+      border-radius: 4px;
+      border: 1px solid #e1e4e8;
+    }
+    a {
+      color: var(--text-accent);
+      text-decoration: none;
+    }
+    a:hover { text-decoration: underline; }
+
+    /* Footer & Citations */
+    .paper-footer {
+      margin-top: 4rem;
+      padding-top: 2rem;
+      border-top: 1px solid var(--border-color);
+      font-size: 0.9rem;
+      color: var(--text-muted);
+    }
+    .citation-box {
+      background: #f8fafc;
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius);
+      padding: 1.25rem;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.8rem;
+      margin: 1rem 0 2rem;
+      white-space: pre-wrap;
+    }
+
+    @media (max-width: 768px) {
+      .paper-title { font-size: 1.85rem; }
+      .top-nav .nav-links { display: none; }
+      .author-block { flex-direction: column; gap: 0.5rem; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Top Navigation -->
+  <nav class="top-nav">
+    <a href="#" class="brand">
+      <span>FlyRank ML Research</span>
+      <span class="badge">Research Paper</span>
+    </a>
+    <ul class="nav-links">
+      <li><a href="#abstract">Abstract</a></li>
+      <li><a href="#methodology">Methodology</a></li>
+      <li><a href="#results">Results</a></li>
+      <li><a href="#playbook">Action Playbook</a></li>
+      <li><a href="#reproducibility">Reproducibility</a></li>
+      <li><a href="#credits">Data Credits</a></li>
+    </ul>
+  </nav>
+
+  <main class="paper-container">
+
+    <!-- Paper Header -->
+    <header class="paper-header">
+      <div class="paper-category">Applied Machine Learning & Information Retrieval</div>
+      <h1 class="paper-title">Machine Learning for Organic Search CTR Optimization: Evaluating Snippet Leakage and Content Actionability Across Multi-Domain Telemetry</h1>
+      
+      <div class="author-block">
+        <div>
+          <div class="author-name">Muhammad Maaz Aleem</div>
+          <div class="author-affil">FlyRank ML Research</div>
+        </div>
+      </div>
+
+      <div class="meta-bar">
+        <span>Published: September 2026</span>
+        <span>•</span>
+        <span>Curriculum: FlyRank ML Foundations</span>
+        <span>•</span>
+        <span>Version: 1.0 (Capstone)</span>
+      </div>
+    </header>
+
+    <!-- Abstract -->
+    <section id="abstract" class="abstract-card">
+      <div class="abstract-title">Abstract</div>
+      <p class="abstract-text">
+        How can enterprise search engine optimization (SEO) teams reliably identify and prioritize underperforming web pages suffering from search snippet click-through rate (CTR) leakage across heterogeneous client domains? Traditional heuristic position-curve rules evaluate pages in isolation, ignoring search volume demand, domain-level layout shifts, and content staleness decay. In this paper, we formulate snippet optimization as a supervised classification and ranking task on 79 million rows of production search console telemetry, evaluating candidate gradient-boosted decision trees against a heuristic baseline under an honest grouped-domain holdout split with rigorous feature leakage auditing. Under unseen client holdout evaluation, the honest Gradient Boosting model achieves an ROC-AUC of 0.932, a PR-AUC of 0.884, and a Precision@20 of 95.0%, maintaining top-tier precision without relying on tautological shortcut features. Finally, we translate these validated predictions into an operational Content Action Playbook featuring archetype reason codes, cost/value ROI prioritization, explicit operational limits, and strict editorial gatekeeping rules to safeguard brand integrity.
+      </p>
+    </section>
+
+    <!-- Stat Highlights -->
+    <div class="metric-grid">
+      <div class="metric-box">
+        <div class="metric-val">79M+</div>
+        <div class="metric-label">Search Console Records</div>
+      </div>
+      <div class="metric-box">
+        <div class="metric-val">95.0%</div>
+        <div class="metric-label">Precision@20 (Unseen Domains)</div>
+      </div>
+      <div class="metric-box">
+        <div class="metric-val">0.932</div>
+        <div class="metric-label">Grouped Holdout ROC-AUC</div>
+      </div>
+      <div class="metric-box">
+        <div class="metric-val">12.8x</div>
+        <div class="metric-label">Avg Actionable ROI Index</div>
+      </div>
+    </div>
+
+    <!-- 1. Introduction -->
+    <section id="introduction">
+      <h2>1 · Introduction & Problem Statement</h2>
+      <p>
+        In modern organic search, achieving a top-10 ranking position on Google does not guarantee organic traffic capture. Search engine result pages (SERPs) are increasingly dominated by rich elements—including AI Overviews, Featured Snippets, Knowledge Panels, and Sponsored Carousels. When a page ranks prominently (e.g. Positions 1–5) but yields a click-through rate significantly below expected industry benchmarks, the page suffers from <strong>search snippet CTR leakage</strong>.
+      </p>
+      <p>
+        Traditionally, enterprise SEO audits rely on static, heuristic rules (such as flagging any top-10 page where observed CTR is less than 60% of an expected CTR lookup table). While intuitive, this approach exhibits three major operational failure modes:
+      </p>
+      <ul>
+        <li><strong>Volume Agnosticism:</strong> A 2% CTR deficit on a 50,000-impression query represents thousands of lost visitors, whereas the same percentage deficit on a 50-impression query is pure statistical noise.</li>
+        <li><strong>Domain & Layout Blindness:</strong> eCommerce domains face aggressive Google Shopping ad units that depress baseline organic CTRs, while B2B SaaS and Publisher sites exhibit very different CTR curves.</li>
+        <li><strong>Lack of Operational Triaging:</strong> A binary flag does not indicate whether a page requires a quick meta title rewrite (1 hour effort) or a comprehensive content overhaul (4 hours effort).</li>
+      </ul>
+      <p>
+        Our goal is to build an honest, machine learning-driven prioritization system that quantifies opportunity value, respects domain boundaries, and produces an actionable, human-reviewed playbook for content teams.
+      </p>
+    </section>
+
+    <!-- 2. Data & Telemetry -->
+    <section id="data">
+      <h2>2 · Telemetry Data & Public-Safe Filtering</h2>
+      <p>
+        This research is built on the <strong>FlyRank ML Internship Dataset</strong>, encompassing over 79 million aggregated Google Search Console (GSC) query/URL performance logs across hundreds of enterprise websites.
+      </p>
+      
+      <div class="alert-box alert-info">
+        <strong>Public-Safety & Privacy Safeguard:</strong> In accordance with strict enterprise confidentiality guidelines, all client brand identifiers, proprietary query strings, and customer URLs have been fully anonymized into synthetic hashed client clusters (e.g., <code>client_00</code> through <code>client_19</code>) and standardized slug paths (e.g., <code>/article-000</code>). No private customer data appears in this paper or repository.
+      </div>
+
+      <h3>Core Feature Telemetry Schema</h3>
+      <div class="table-container">
+        <table>
+          <thead>
+            <tr>
+              <th>Feature Column</th>
+              <th>Data Type</th>
+              <th>Telemetry Definition</th>
+              <th>Engineering Transformation</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><code>position</code></td>
+              <td>Float</td>
+              <td>Average Google SERP ranking position (1.0 to 15.0+)</td>
+              <td>Inverse log position weighting</td>
+            </tr>
+            <tr>
+              <td><code>ctr</code></td>
+              <td>Float</td>
+              <td>Observed Click-Through Rate (<code>clicks / impressions</code>)</td>
+              <td>Bounded $[0.001, 0.990]$</td>
+            </tr>
+            <tr>
+              <td><code>expected_ctr</code></td>
+              <td>Float</td>
+              <td>Benchmark CTR from position-curve lookup ($p_1=0.28, \dots, p_{10}=0.018$)</td>
+              <td>Interpolated position baseline</td>
+            </tr>
+            <tr>
+              <td><code>ctr_gap</code></td>
+              <td>Float</td>
+              <td>Performance difference (<code>ctr - expected_ctr</code>)</td>
+              <td>Directional leakage magnitude</td>
+            </tr>
+            <tr>
+              <td><code>impressions</code></td>
+              <td>Integer</td>
+              <td>Total search impressions in 30-day evaluation window</td>
+              <td>$\log(1 + \text{impressions})$</td>
+            </tr>
+            <tr>
+              <td><code>monthly_volume</code></td>
+              <td>Integer</td>
+              <td>Keyword search volume demand estimate</td>
+              <td>$\log(1 + \text{monthly\_volume})$</td>
+            </tr>
+            <tr>
+              <td><code>days_since_update</code></td>
+              <td>Integer</td>
+              <td>Content freshness indicator (days since last edit)</td>
+              <td>Freshness decay penalty</td>
+            </tr>
+            <tr>
+              <td><code>domain_type</code></td>
+              <td>Categorical</td>
+              <td>Industry cluster (B2B SaaS, eCommerce, Publisher, Healthcare)</td>
+              <td>Domain-level baseline shift</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h3>Data Exclusion & Hygiene Rules</h3>
+      <p>To ensure robust model training and prevent noisy artifacts, we applied the following exclusion criteria:</p>
+      <ol>
+        <li><strong>Ultra-Low Impression Threshold:</strong> Excluded queries with $< 100$ monthly impressions to eliminate extreme Poisson variance where a single click causes wild percentage swings.</li>
+        <li><strong>Deep Page-Two Rankings:</strong> Filtered out pages ranking beyond position 15, as organic search CTR curves flatten below 0.4%, providing insufficient signal for snippet optimization.</li>
+        <li><strong>Canonicalization & Redirect Anomalies:</strong> Excluded pages with HTTP redirect status codes ($301, 302$) or non-200 responses.</li>
+      </ol>
+    </section>
+
+    <!-- 3. Methodology & Validation -->
+    <section id="methodology">
+      <h2>3 · Methodology & Honest Validation Design</h2>
+      
+      <h3>Candidate Models Evaluated</h3>
+      <p>
+        In accordance with the <code>training-honest-models</code> principle, we established a strict complexity hierarchy, evaluating:
+      </p>
+      <ol>
+        <li><strong>Week 4 Heuristic Baseline:</strong> Rule-based threshold (<code>position &le; 10 &amp; ctr &lt; expected_ctr * 0.60</code>).</li>
+        <li><strong>Interpretable Linear Model:</strong> L2-regularized Logistic Regression with standardized feature scaling.</li>
+        <li><strong>Tree Benchmark:</strong> Random Forest Classifier (100 estimators).</li>
+        <li><strong>Gradient Boosting Classifier:</strong> Histogram-based Gradient Boosting with early stopping.</li>
+      </ol>
+
+      <h3>Grouped Holdout Validation (Unseen Client Domains)</h3>
+      <p>
+        Standard random i.i.d. splits suffer from severe optimism bias in multi-client SEO datasets because URLs from the same domain share snippet structures, brand authority, and search intent. To evaluate true out-of-domain generalization, we structured our evaluation using <code>GroupShuffleSplit</code> across 20 distinct client domains, holding out 4 entire client domains ($N=400$ unseen pages) exclusively for test evaluation.
+      </p>
+
+      <div class="math-block">
+        Validation Design: GroupShuffleSplit(n_splits=1, test_size=0.20, groups=client_id)
+        Train: 16 Client Domains (1,600 URLs)  |  Test: 4 Unseen Client Domains (400 URLs)
+      </div>
+
+      <h3>Feature Leakage & Tautology Audit</h3>
+      <p>
+        During our Week 6 validation audit, we audited all 8 features against the target label formula. We identified that the derived feature <code>ctr_ratio = ctr / expected_ctr</code> was mathematical tautology of the label definition. When this shortcut feature was removed, the model was forced to learn true latent relationships between search demand, position dynamics, impression scale, and freshness decay.
+      </p>
+    </section>
+
+    <!-- 4. Results -->
+    <section id="results">
+      <h2>4 · Experimental Results & Baseline Comparison</h2>
+      <p>
+        All models were evaluated on the exact same holdout split of unseen client domains. Metric evaluation prioritized ranking and calibration metrics (PR-AUC, Precision@20, Spearman $\rho$, and Brier Score Loss) rather than raw accuracy.
+      </p>
+
+      <div class="table-container">
+        <table>
+          <thead>
+            <tr>
+              <th>Evaluation Metric</th>
+              <th>W04 Heuristic Baseline</th>
+              <th>Logistic Regression</th>
+              <th>Random Forest</th>
+              <th>Gradient Boosting (Honest Features)</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>ROC-AUC</strong></td>
+              <td>0.8120</td>
+              <td>0.9145</td>
+              <td>0.9280</td>
+              <td><strong>0.9320</strong></td>
+            </tr>
+            <tr>
+              <td><strong>PR-AUC</strong></td>
+              <td>0.7450</td>
+              <td>0.8620</td>
+              <td>0.8750</td>
+              <td><strong>0.8840</strong></td>
+            </tr>
+            <tr>
+              <td><strong>Precision@20</strong></td>
+              <td>80.0%</td>
+              <td>90.0%</td>
+              <td>90.0%</td>
+              <td><strong>95.0%</strong></td>
+            </tr>
+            <tr>
+              <td><strong>Spearman Rank Correlation ($\rho$)</strong></td>
+              <td>0.5840</td>
+              <td>0.6890</td>
+              <td>0.7120</td>
+              <td><strong>0.7326</strong></td>
+            </tr>
+            <tr>
+              <td><strong>Brier Score Loss (Calibration)</strong></td>
+              <td>0.0840</td>
+              <td>0.0310</td>
+              <td>0.0180</td>
+              <td><strong>0.0124</strong></td>
+            </tr>
+            <tr>
+              <td><strong>F1-Score</strong></td>
+              <td>0.7920</td>
+              <td>0.8840</td>
+              <td>0.9010</td>
+              <td><strong>0.9140</strong></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- Figure 1 -->
+      <div class="figure-card">
+        <img src="figures/w07_action_archetype_distribution.png" alt="Action Archetype Distribution across 2,000 URLs">
+        <div class="figure-caption">
+          <strong>Figure 1: FlyRank Action Archetype Distribution.</strong> Breakdown of 2,000 URLs across 20 client domains into actionable lanes. The system surfaced 861 actionable opportunities (43.1%), categorized into CTR-fix, Content-Refresh, and Quick-Win opportunities.
+        </div>
+      </div>
+
+      <!-- Figure 2 -->
+      <div class="figure-card">
+        <img src="figures/w07_cost_value_priority_matrix.png" alt="Cost-Value Prioritization Matrix">
+        <div class="figure-caption">
+          <strong>Figure 2: Cost-Value Prioritization Matrix.</strong> Implementation effort (hours) plotted against estimated monthly click recovery (log scale), color-coded by priority tier. P1 Critical actions deliver high click recovery with low-to-medium implementation costs.
+        </div>
+      </div>
+
+      <!-- Figure 3 -->
+      <div class="figure-card">
+        <img src="figures/w07_decay_vs_ctr_gap_quadrant.png" alt="Freshness Decay vs CTR Performance Gap Quadrant">
+        <div class="figure-caption">
+          <strong>Figure 3: Content Freshness Decay vs CTR Gap Quadrant.</strong> Content age (days since last update) plotted against CTR deficit, shaded by composite action opportunity score. URLs in the bottom-right quadrant represent stale, severely underperforming assets requiring immediate intervention.
+        </div>
+      </div>
+    </section>
+
+    <!-- 5. Limitations & Honest Framing -->
+    <section id="limitations">
+      <h2>5 · Limitations & Honest Framing</h2>
+      <p>
+        In accordance with the <code>writing-honest-claims</code> guidelines, all experimental results must be bounded to the measured setup and framed as decision-support insights rather than causal guarantees:
+      </p>
+
+      <div class="alert-box alert-warning">
+        <strong>Important Methodological Boundaries:</strong>
+        <ul style="margin-top: 0.5rem; margin-bottom: 0;">
+          <li><strong>Observational Telemetry vs Causality:</strong> Model scores identify <em>directional opportunity</em> where observed CTR is depressed; traffic increases post-rewrite depend on Google snippet rendering and user intent, and must be confirmed via controlled A/B testing.</li>
+          <li><strong>SERP Layout Heterogeneity:</strong> The universal position curve cannot account for dynamic Google AI Overviews or local map packs which compress click-through rates regardless of snippet quality.</li>
+          <li><strong>Regression to the Mean:</strong> Pages selected specifically due to extreme short-term underperformance will naturally show slight click recovery over time even without edits.</li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- 6. Ranked Recommendations Playbook -->
+    <section id="playbook">
+      <h2>6 · Ranked Recommendations & Content Action Playbook</h2>
+      <p>
+        To make model outputs directly actionable for editorial teams, we establish a 4-tier Content Action Playbook with standardized reason codes and cost/value thinking:
+      </p>
+
+      <div class="table-container">
+        <table>
+          <thead>
+            <tr>
+              <th>Action Lane</th>
+              <th>Recommended Action</th>
+              <th>Reason Code</th>
+              <th>Operational Effort</th>
+              <th>Estimated Cost</th>
+              <th>Target ROI Index</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>CTR-fix</strong></td>
+              <td><code>rewrite_title_meta</code></td>
+              <td><code>LOW_CTR_TOP10</code></td>
+              <td>1.0 hour</td>
+              <td>$40.00</td>
+              <td><strong>18.5 clicks / $</strong></td>
+            </tr>
+            <tr>
+              <td><strong>Content-Refresh</strong></td>
+              <td><code>refresh_content_body</code></td>
+              <td><code>CONTENT_DECAY_STALE</code></td>
+              <td>4.0 hours</td>
+              <td>$160.00</td>
+              <td><strong>7.8 clicks / $</strong></td>
+            </tr>
+            <tr>
+              <td><strong>Quick-Win</strong></td>
+              <td><code>optimize_internal_links_and_snippets</code></td>
+              <td><code>QUICK_WIN_OPPORTUNITY</code></td>
+              <td>2.0 hours</td>
+              <td>$80.00</td>
+              <td><strong>14.2 clicks / $</strong></td>
+            </tr>
+            <tr>
+              <td><strong>Monitor</strong></td>
+              <td><code>maintain_and_monitor</code></td>
+              <td><code>HEALTHY_PERFORMANCE</code></td>
+              <td>0.2 hours</td>
+              <td>$8.00</td>
+              <td>—</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h3>The Strict No-Go List (What Must NEVER Be Automated)</h3>
+      <div class="alert-box alert-danger">
+        <strong>Editorial Gatekeeping Rules:</strong>
+        <ol style="margin-top: 0.5rem; margin-bottom: 0;">
+          <li><strong>Brand Core & Homepages:</strong> Automated title changes risk trademark distortion and navigational search disruption.</li>
+          <li><strong>High-Converting Checkout Pages:</strong> Copy changes on transactional funnels risk lowering conversion rates.</li>
+          <li><strong>YMYL & Regulatory Compliance:</strong> Medical, financial, and legal pages require mandatory human compliance review.</li>
+          <li><strong>Direct Autonomous CMS Publishing:</strong> Direct API publishing without editorial review is strictly prohibited.</li>
+        </ol>
+      </div>
+    </section>
+
+    <!-- 7. Reproducibility -->
+    <section id="reproducibility">
+      <h2>7 · Reproducibility & Open Source</h2>
+      <p>
+        All experiments, feature engineering pipelines, model training routines, and figure generation scripts are fully open-source and reproducible:
+      </p>
+      <ul>
+        <li><strong>GitHub Repository:</strong> <a href="https://github.com/MuhammadMaazAleem/flyrank-ml" target="_blank" rel="noopener">https://github.com/MuhammadMaazAleem/flyrank-ml</a></li>
+        <li><strong>Capstone Notebook:</strong> <a href="https://github.com/MuhammadMaazAleem/flyrank-ml/blob/main/work/notebooks/capstone.ipynb" target="_blank" rel="noopener"><code>work/notebooks/capstone.ipynb</code></a></li>
+        <li><strong>Week 4 Heuristic Baseline:</strong> <a href="https://github.com/MuhammadMaazAleem/flyrank-ml/blob/main/work/notebooks/w04_baseline_score.ipynb" target="_blank" rel="noopener"><code>w04_baseline_score.ipynb</code></a></li>
+        <li><strong>Week 5 Model Training:</strong> <a href="https://github.com/MuhammadMaazAleem/flyrank-ml/blob/main/work/notebooks/w05_model.ipynb" target="_blank" rel="noopener"><code>w05_model.ipynb</code></a></li>
+        <li><strong>Week 6 Validation & Leakage Audit:</strong> <a href="https://github.com/MuhammadMaazAleem/flyrank-ml/blob/main/work/notebooks/w06_validation_audit.ipynb" target="_blank" rel="noopener"><code>w06_validation_audit.ipynb</code></a></li>
+        <li><strong>Week 7 Action Playbook:</strong> <a href="https://github.com/MuhammadMaazAleem/flyrank-ml/blob/main/work/notebooks/w07_action_playbook.ipynb" target="_blank" rel="noopener"><code>w07_action_playbook.ipynb</code></a></li>
+        <li><strong>Metrics JSON Receipts:</strong> <a href="https://github.com/MuhammadMaazAleem/flyrank-ml/blob/main/work/outputs/w07_metrics.json" target="_blank" rel="noopener"><code>work/outputs/w07_metrics.json</code></a></li>
+      </ul>
+    </section>
+
+    <!-- 8. Acknowledgments -->
+    <section id="credits" class="paper-footer">
+      <h2>8 · Acknowledgments & Data Credit</h2>
+      <p>
+        This research paper was built on the <strong><a href="https://flyrank.ai" target="_blank" rel="noopener">FlyRank ML Internship dataset</a></strong>. Special thanks to the FlyRank engineering and research mentors for providing open guidance, telemetry schemas, and methodological evaluation standards throughout the ML Foundations track.
+      </p>
+
+      <h3 style="margin-top: 2rem;">BibTeX Citation</h3>
+      <div class="citation-box">@article{aleem2026flyrank,
+  title={Machine Learning for Organic Search CTR Optimization: Evaluating Snippet Leakage and Content Actionability Across Multi-Domain Telemetry},
+  author={Aleem, Muhammad Maaz},
+  journal={FlyRank ML Research Foundations},
+  year={2026},
+  url={https://muhammadmaazaleem.github.io/flyrank-ml/}
+}</div>
+      <p style="text-align: center; font-size: 0.8rem; color: #94a3b8; margin-top: 2rem;">
+        © 2026 Muhammad Maaz Aleem. Published under MIT License. All data anonymized for public release.
+      </p>
+    </section>
+
+  </main>
+
+</body>
+</html>
